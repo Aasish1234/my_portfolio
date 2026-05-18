@@ -29,7 +29,7 @@ export default function Background3D({ scrollProgress }) {
 
     // SHAPE 1: Fibonacci Sphere (Home Page)
     // TWEAK THIS NUMBER: Lower is smaller (e.g., 8), Higher is bigger (e.g., 20)
-    const scaleSphere = 14; 
+    const scaleSphere = 20; 
     
     for (let i = 0; i < particleCount; i++) {
       const phi = Math.acos(-1 + (2 * i) / particleCount)
@@ -43,7 +43,7 @@ export default function Background3D({ scrollProgress }) {
 
     // SHAPE 2: Lorenz Attractor (About Page)
     // TWEAK THIS NUMBER: Lower is smaller (e.g., 0.3), Higher is bigger (e.g., 1.0)
-    const scaleLorenz = 0.8;
+    const scaleLorenz = 2.0;
     
     let x = 0.01, y = 0, z = 0
     const a = 10, b = 28, c = 8.0 / 3.0, dt = 0.01
