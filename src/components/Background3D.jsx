@@ -28,37 +28,53 @@ export default function Background3D({ scrollProgress }) {
     const layouts = [[], [], []]
 
     // SHAPE 1: Fibonacci Sphere (Home Page)
-    const radius = 14
+    // TWEAK THIS NUMBER: Lower is smaller (e.g., 8), Higher is bigger (e.g., 20)
+    const scaleSphere = 14; 
+    
     for (let i = 0; i < particleCount; i++) {
       const phi = Math.acos(-1 + (2 * i) / particleCount)
       const theta = Math.sqrt(particleCount * Math.PI) * phi
       layouts[0].push(new THREE.Vector3(
-        radius * Math.cos(theta) * Math.sin(phi),
-        radius * Math.sin(theta) * Math.sin(phi),
-        radius * Math.cos(phi)
+        scaleSphere * Math.cos(theta) * Math.sin(phi),
+        scaleSphere * Math.sin(theta) * Math.sin(phi),
+        scaleSphere * Math.cos(phi)
       ))
     }
 
     // SHAPE 2: Lorenz Attractor (About Page)
+    // TWEAK THIS NUMBER: Lower is smaller (e.g., 0.3), Higher is bigger (e.g., 1.0)
+    const scaleLorenz = 0.8;
+    
     let x = 0.01, y = 0, z = 0
     const a = 10, b = 28, c = 8.0 / 3.0, dt = 0.01
     for (let i = 0; i < particleCount; i++) {
       x += a * (y - x) * dt
       y += (x * (b - z) - y) * dt
       z += (x * y - c * z) * dt
-      layouts[1].push(new THREE.Vector3(x * 0.6, y * 0.6 - 15, z * 0.6 - 15))
+      // Note: We also multiply the -15 offset by the scale to keep it perfectly centered!
+      layouts[1].push(new THREE.Vector3(
+        x * scaleLorenz, 
+        (y - 25) * scaleLorenz, 
+        (z - 25) * scaleLorenz
+      ))
     }
 
     // SHAPE 3: 3D Matrix Grid (Skills Page)
+    //  TWEAK THIS NUMBER: Lower is smaller (e.g., 2), Higher is bigger (e.g., 5)
+    const scaleGrid = 5;
+    
     const size = Math.ceil(Math.pow(particleCount, 1/3)) // ~13
-    const step = 3.5
-    const offset = (size * step) / 2
+    const offset = (size * scaleGrid) / 2
     let p = 0
     for (let ix = 0; ix < size; ix++) {
       for (let iy = 0; iy < size; iy++) {
         for (let iz = 0; iz < size; iz++) {
           if (p < particleCount) {
-            layouts[2].push(new THREE.Vector3(ix * step - offset, iy * step - offset, iz * step - offset))
+            layouts[2].push(new THREE.Vector3(
+              ix * scaleGrid - offset, 
+              iy * scaleGrid - offset, 
+              iz * scaleGrid - offset
+            ))
             p++
           }
         }
