@@ -1,7 +1,7 @@
 import { useState, useEffect, useRef } from 'react'
 import CustomCursor from './components/CustomCursor'
 import Background3D from './components/Background3D'
-
+import RobotCompanion from './components/RobotCompanion'
 function App() {
   const [isLoading, setIsLoading] = useState(true)
   const [scrollProgress, setScrollProgress] = useState(0)
@@ -61,18 +61,26 @@ function App() {
         className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth relative z-10"
       >
         {/* SLIDE 1: HOME */}
-        <section id="home" className="h-screen w-full snap-start flex flex-col items-center justify-center p-6">
-          <div className="text-center max-w-3xl bg-gray-900/40 p-8 rounded-2xl backdrop-blur-md border border-gray-800/50">
+        <section id="home" className="h-screen w-full snap-start flex flex-col md:flex-row items-center justify-center p-6 gap-12 relative">
+          
+          {/* Text Content */}
+          <div className="text-left max-w-2xl bg-gray-900/40 p-8 rounded-2xl backdrop-blur-md border border-gray-800/50 z-10">
             <h1 className="text-6xl font-extrabold mb-4 tracking-tight bg-gradient-to-r from-white via-gray-200 to-blue-500 bg-clip-text text-transparent">
               Hi, I'm Aasish
             </h1>
             <p className="text-xl text-blue-400 font-medium uppercase tracking-widest mb-2">
               Computer Science & Engineering Student
             </p>
-            <p className="text-gray-400 max-w-md mx-auto">
+            <p className="text-gray-400 max-w-md">
               Building next-generation full-stack architectures and integrated hardware systems.
             </p>
           </div>
+
+          {/* 3D Robot Companion */}
+          <div className="z-10 hidden md:block">
+            <RobotCompanion />
+          </div>
+
         </section>
 
         {/* SLIDE 2: ABOUT */}
