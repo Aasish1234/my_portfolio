@@ -71,6 +71,17 @@ function App() {
             <p className="text-gray-300 max-w-md leading-relaxed">
               Dedicated Computer Science student with a strong focus on ethics and self-improvement. Experienced in developing AI/ML and IoT solutions, with a focus on resilient, high-quality code.
             </p>
+
+             {/* Updated Button Group */}
+            <div className="mt-8 flex flex-wrap gap-4">
+            {/* Primary Action: Download CV */}
+            <a 
+            href="/Aasish_CV.pdf" 
+            download="Aasish_Shrestha_CV.pdf" 
+            className="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-full text-sm font-bold transition-colors shadow-[0_0_15px_rgba(37,99,235,0.5)]"
+            >
+            Download CV
+            </a>
             <div className="mt-6 flex gap-4">
               <a href="mailto:aasishshrestha2005@gmail.com" className="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-full text-sm font-bold transition-colors">Email Me</a> 
               <a href="https://github.com/Aasish1234" target="_blank" rel="noreferrer" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full text-sm font-bold transition-colors">GitHub</a> 
