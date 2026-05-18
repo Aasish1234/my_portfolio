@@ -27,12 +27,11 @@ export default function Background3D({ scrollProgress }) {
     const particleCount = 2000
     const layouts = [[], [], []]
 
-    // SHAPE 1: Fibonacci Sphere (Now on Home Page)
+    // SHAPE 1: Fibonacci Sphere (Home Page)
     const radius = 14
     for (let i = 0; i < particleCount; i++) {
       const phi = Math.acos(-1 + (2 * i) / particleCount)
       const theta = Math.sqrt(particleCount * Math.PI) * phi
-      // Pushing to layouts[0]
       layouts[0].push(new THREE.Vector3(
         radius * Math.cos(theta) * Math.sin(phi),
         radius * Math.sin(theta) * Math.sin(phi),
@@ -40,14 +39,13 @@ export default function Background3D({ scrollProgress }) {
       ))
     }
 
-    // SHAPE 2: Lorenz Attractor (Now on About Page)
+    // SHAPE 2: Lorenz Attractor (About Page)
     let x = 0.01, y = 0, z = 0
     const a = 10, b = 28, c = 8.0 / 3.0, dt = 0.01
     for (let i = 0; i < particleCount; i++) {
       x += a * (y - x) * dt
       y += (x * (b - z) - y) * dt
       z += (x * y - c * z) * dt
-      // Pushing to layouts[1]
       layouts[1].push(new THREE.Vector3(x * 0.6, y * 0.6 - 15, z * 0.6 - 15))
     }
 
@@ -67,14 +65,14 @@ export default function Background3D({ scrollProgress }) {
       }
     }
 
-    // 3. Build the InstancedMesh
+    // 3. Build the InstancedMesh (Small, White, Glowing)
     const geometry = new THREE.SphereGeometry(0.04, 8, 8) 
     const material = new THREE.MeshBasicMaterial({ 
-      color:0xffffff, // Start Tailwind Blue
+      color: 0xffffff, 
       transparent: true, 
-      opacity: 0.7, // Slightly lower opacity allows the glow to build up
-      blending: THREE.AdditiveBlending, // THIS creates the glowing light effect
-      depthWrite: false // Prevents particles from clipping into each other awkwardly
+      opacity: 0.7, 
+      blending: THREE.AdditiveBlending, 
+      depthWrite: false 
     })
     
     const instancedMesh = new THREE.InstancedMesh(geometry, material, particleCount)
@@ -85,10 +83,8 @@ export default function Background3D({ scrollProgress }) {
 
     camera.position.z = 30
 
-    // Colors for the 3 sections (Blue -> Purple -> Emerald)
-    const color1 = new THREE.Color(0xffffff)
-    const color2 = new THREE.Color(0xffffff)
-    const color3 = new THREE.Color(0xffffff)
+    // Colors locked to pure white
+    const colorWhite = new THREE.Color(0xffffff)
 
     // 4. Mouse Tracking for Parallax
     let mouseX = 0, mouseY = 0
@@ -108,37 +104,40 @@ export default function Background3D({ scrollProgress }) {
 
     // 5. High-Performance Animation Loop
     const clock = new THREE.Clock()
-    const tempVec = new THREE.Vector3() // Pre-allocate to prevent memory leaks
+    const tempVec = new THREE.Vector3() 
     let animationFrameId
-    let smoothedProgress = 0
+    let smoothedProgress = 0 // Tracks the slow catch-up morphing
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
       const elapsedTime = clock.getElapsedTime()
-      const scroll = scrollRef.current || 0
+      
+      // Get the actual scroll position (0 to 1)
+      const targetScroll = scrollRef.current || 0
 
+      // Slowly move smoothedProgress towards the actual scroll position (0.02 speed)
       smoothedProgress += (targetScroll - smoothedProgress) * 0.02
 
-      // A. Calculate which two shapes to blend between based on scroll (0 to 1)
+      // A. Calculate which two shapes to blend between based on the SMOOTHED progress
       let currentIndex = 0
       let nextIndex = 1
       let lerpFactor = 0
 
-      if (scroll < 0.5) {
+      if (smoothedProgress < 0.5) {
         // Scrolling from Slide 1 to 2
         currentIndex = 0
         nextIndex = 1
-        lerpFactor = scroll * 2 
-        material.color.lerpColors(color1, color2, lerpFactor)
+        lerpFactor = smoothedProgress * 2 
+        material.color.lerpColors(colorWhite, colorWhite, lerpFactor)
       } else {
         // Scrolling from Slide 2 to 3
         currentIndex = 1
         nextIndex = 2
-        lerpFactor = (scroll - 0.5) * 2 
-        material.color.lerpColors(color2, color3, lerpFactor)
+        lerpFactor = (smoothedProgress - 0.5) * 2 
+        material.color.lerpColors(colorWhite, colorWhite, lerpFactor)
       }
 
-      // Smooth out the transition using an easing formula (Ease-in-out)
+      // Smooth out the transition using an easing formula
       const easeFactor = lerpFactor < 0.5 
         ? 2 * lerpFactor * lerpFactor 
         : 1 - Math.pow(-2 * lerpFactor + 2, 2) / 2
