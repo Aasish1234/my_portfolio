@@ -27,26 +27,28 @@ export default function Background3D({ scrollProgress }) {
     const particleCount = 2000
     const layouts = [[], [], []]
 
-    // SHAPE 1: Lorenz Attractor (Home Page)
+    // SHAPE 1: Fibonacci Sphere (Now on Home Page)
+    const radius = 14
+    for (let i = 0; i < particleCount; i++) {
+      const phi = Math.acos(-1 + (2 * i) / particleCount)
+      const theta = Math.sqrt(particleCount * Math.PI) * phi
+      // Pushing to layouts[0]
+      layouts[0].push(new THREE.Vector3(
+        radius * Math.cos(theta) * Math.sin(phi),
+        radius * Math.sin(theta) * Math.sin(phi),
+        radius * Math.cos(phi)
+      ))
+    }
+
+    // SHAPE 2: Lorenz Attractor (Now on About Page)
     let x = 0.01, y = 0, z = 0
     const a = 10, b = 28, c = 8.0 / 3.0, dt = 0.01
     for (let i = 0; i < particleCount; i++) {
       x += a * (y - x) * dt
       y += (x * (b - z) - y) * dt
       z += (x * y - c * z) * dt
-      layouts[0].push(new THREE.Vector3(x * 0.6, y * 0.6 - 15, z * 0.6 - 15))
-    }
-
-    // SHAPE 2: Fibonacci Sphere (About Page)
-    const radius = 14
-    for (let i = 0; i < particleCount; i++) {
-      const phi = Math.acos(-1 + (2 * i) / particleCount)
-      const theta = Math.sqrt(particleCount * Math.PI) * phi
-      layouts[1].push(new THREE.Vector3(
-        radius * Math.cos(theta) * Math.sin(phi),
-        radius * Math.sin(theta) * Math.sin(phi),
-        radius * Math.cos(phi)
-      ))
+      // Pushing to layouts[1]
+      layouts[1].push(new THREE.Vector3(x * 0.6, y * 0.6 - 15, z * 0.6 - 15))
     }
 
     // SHAPE 3: 3D Matrix Grid (Skills Page)
