@@ -5,7 +5,6 @@ export default function Background3D({ scrollProgress }) {
   const containerRef = useRef(null)
   const scrollRef = useRef(scrollProgress)
 
-  // Keep scroll state updated without re-triggering the 3D scene setup
   useEffect(() => {
     scrollRef.current = scrollProgress
   }, [scrollProgress])
@@ -14,7 +13,6 @@ export default function Background3D({ scrollProgress }) {
     const container = containerRef.current
     if (!container) return
 
-    // 1. Setup Scene
     const scene = new THREE.Scene()
     const camera = new THREE.PerspectiveCamera(75, window.innerWidth / window.innerHeight, 0.1, 1000)
     const renderer = new THREE.WebGLRenderer({ antialias: true, alpha: true })
@@ -23,14 +21,12 @@ export default function Background3D({ scrollProgress }) {
     renderer.setPixelRatio(Math.min(window.devicePixelRatio, 2))
     container.appendChild(renderer.domElement)
 
-    // 2. Define the 3 Shapes (The Morph Targets)
     const particleCount = 2000
-    const layouts = [[], [], []]
+    // We now have 5 arrays for 5 pages
+    const layouts = [[], [], [], [], []]
 
-    // SHAPE 1: Fibonacci Sphere (Home Page)
-    // TWEAK THIS NUMBER: Lower is smaller (e.g., 8), Higher is bigger (e.g., 20)
-    const scaleSphere = 20; 
-    
+    // SHAPE 1: Fibonacci Sphere (Home)
+    const scaleSphere = 14; 
     for (let i = 0; i < particleCount; i++) {
       const phi = Math.acos(-1 + (2 * i) / particleCount)
       const theta = Math.sqrt(particleCount * Math.PI) * phi
@@ -41,47 +37,61 @@ export default function Background3D({ scrollProgress }) {
       ))
     }
 
-    // SHAPE 2: Lorenz Attractor (About Page)
-    // TWEAK THIS NUMBER: Lower is smaller (e.g., 0.3), Higher is bigger (e.g., 1.0)
-    const scaleLorenz = 1.5;
-    
+    // SHAPE 2: DNA Double Helix (Experience)
+    const radiusHelix = 6;
+    const heightHelix = 35;
+    const turns = 4;
+    for (let i = 0; i < particleCount; i++) {
+      const t = i / particleCount; 
+      const angle = t * Math.PI * 2 * turns;
+      const yPos = (t - 0.5) * heightHelix;
+      if (i % 2 === 0) {
+        layouts[2].push(new THREE.Vector3(Math.cos(angle) * radiusHelix, yPos, Math.sin(angle) * radiusHelix));
+      } else {
+        layouts[2].push(new THREE.Vector3(Math.cos(angle + Math.PI) * radiusHelix, yPos, Math.sin(angle + Math.PI) * radiusHelix));
+      }
+    }
+
+    // SHAPE 2: Lorenz Attractor (About)
+    const scaleLorenz = 0.6;
     let x = 0.01, y = 0, z = 0
     const a = 10, b = 28, c = 8.0 / 3.0, dt = 0.01
     for (let i = 0; i < particleCount; i++) {
       x += a * (y - x) * dt
       y += (x * (b - z) - y) * dt
       z += (x * y - c * z) * dt
-      // Note: We also multiply the -15 offset by the scale to keep it perfectly centered!
-      layouts[1].push(new THREE.Vector3(
-        x * scaleLorenz, 
-        (y - 25) * scaleLorenz, 
-        (z - 25) * scaleLorenz
-      ))
+      layouts[1].push(new THREE.Vector3(x * scaleLorenz, (y - 25) * scaleLorenz, (z - 25) * scaleLorenz))
     }
 
-    // SHAPE 3: 3D Matrix Grid (Skills Page)
-    //  TWEAK THIS NUMBER: Lower is smaller (e.g., 2), Higher is bigger (e.g., 5)
-    const scaleGrid = 5;
-    
-    const size = Math.ceil(Math.pow(particleCount, 1/3)) // ~13
+    // SHAPE 4: The Torus (Projects & Research)
+    const R = 12; 
+    const r = 5;  
+    for (let i = 0; i < particleCount; i++) {
+      const u = Math.random() * Math.PI * 2;
+      const v = Math.random() * Math.PI * 2;
+      layouts[3].push(new THREE.Vector3(
+        (R + r * Math.cos(v)) * Math.cos(u),
+        (R + r * Math.cos(v)) * Math.sin(u),
+        r * Math.sin(v)
+      ));
+    }
+
+    // SHAPE 5: 3D Matrix Grid (Skills & Certifications)
+    const scaleGrid = 3.5;
+    const size = Math.ceil(Math.pow(particleCount, 1/3)) 
     const offset = (size * scaleGrid) / 2
     let p = 0
     for (let ix = 0; ix < size; ix++) {
       for (let iy = 0; iy < size; iy++) {
         for (let iz = 0; iz < size; iz++) {
           if (p < particleCount) {
-            layouts[2].push(new THREE.Vector3(
-              ix * scaleGrid - offset, 
-              iy * scaleGrid - offset, 
-              iz * scaleGrid - offset
-            ))
+            layouts[4].push(new THREE.Vector3(ix * scaleGrid - offset, iy * scaleGrid - offset, iz * scaleGrid - offset))
             p++
           }
         }
       }
     }
 
-    // 3. Build the InstancedMesh (Small, White, Glowing)
     const geometry = new THREE.SphereGeometry(0.04, 8, 8) 
     const material = new THREE.MeshBasicMaterial({ 
       color: 0xffffff, 
@@ -99,10 +109,6 @@ export default function Background3D({ scrollProgress }) {
 
     camera.position.z = 30
 
-    // Colors locked to pure white
-    const colorWhite = new THREE.Color(0xffffff)
-
-    // 4. Mouse Tracking for Parallax
     let mouseX = 0, mouseY = 0
     const handleMouseMove = (e) => {
       mouseX = (e.clientX / window.innerWidth) - 0.5
@@ -110,7 +116,6 @@ export default function Background3D({ scrollProgress }) {
     }
     window.addEventListener('mousemove', handleMouseMove)
 
-    // Responsive Resizing
     const handleResize = () => {
       camera.aspect = window.innerWidth / window.innerHeight
       camera.updateProjectionMatrix()
@@ -118,47 +123,31 @@ export default function Background3D({ scrollProgress }) {
     }
     window.addEventListener('resize', handleResize)
 
-    // 5. High-Performance Animation Loop
     const clock = new THREE.Clock()
     const tempVec = new THREE.Vector3() 
     let animationFrameId
-    let smoothedProgress = 0 // Tracks the slow catch-up morphing
+    let smoothedProgress = 0 
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
       const elapsedTime = clock.getElapsedTime()
-      
-      // Get the actual scroll position (0 to 1)
       const targetScroll = scrollRef.current || 0
 
-      // Slowly move smoothedProgress towards the actual scroll position (0.02 speed)
       smoothedProgress += (targetScroll - smoothedProgress) * 0.02
 
-      // A. Calculate which two shapes to blend between based on the SMOOTHED progress
-      let currentIndex = 0
-      let nextIndex = 1
-      let lerpFactor = 0
+      // Dynamic calculation for 5 sections (0, 1, 2, 3, 4)
+      const totalSections = 5;
+      const progressPerSection = 1 / (totalSections - 1);
+      
+      let currentIndex = Math.floor(smoothedProgress / progressPerSection);
+      currentIndex = Math.min(currentIndex, totalSections - 2); // Prevent out of bounds
+      let nextIndex = currentIndex + 1;
+      
+      let lerpFactor = (smoothedProgress - (currentIndex * progressPerSection)) / progressPerSection;
+      lerpFactor = Math.max(0, Math.min(1, lerpFactor));
 
-      if (smoothedProgress < 0.5) {
-        // Scrolling from Slide 1 to 2
-        currentIndex = 0
-        nextIndex = 1
-        lerpFactor = smoothedProgress * 2 
-        material.color.lerpColors(colorWhite, colorWhite, lerpFactor)
-      } else {
-        // Scrolling from Slide 2 to 3
-        currentIndex = 1
-        nextIndex = 2
-        lerpFactor = (smoothedProgress - 0.5) * 2 
-        material.color.lerpColors(colorWhite, colorWhite, lerpFactor)
-      }
+      const easeFactor = lerpFactor < 0.5 ? 2 * lerpFactor * lerpFactor : 1 - Math.pow(-2 * lerpFactor + 2, 2) / 2
 
-      // Smooth out the transition using an easing formula
-      const easeFactor = lerpFactor < 0.5 
-        ? 2 * lerpFactor * lerpFactor 
-        : 1 - Math.pow(-2 * lerpFactor + 2, 2) / 2
-
-      // B. Morph the particles mathematically
       const currentLayout = layouts[currentIndex]
       const nextLayout = layouts[nextIndex]
 
@@ -170,7 +159,6 @@ export default function Background3D({ scrollProgress }) {
       }
       instancedMesh.instanceMatrix.needsUpdate = true
 
-      // C. Gentle continuous rotation + Mouse Parallax
       group.rotation.y = elapsedTime * 0.1 + (mouseX * 0.2)
       group.rotation.x = elapsedTime * 0.05 + (mouseY * 0.2)
 
@@ -179,7 +167,6 @@ export default function Background3D({ scrollProgress }) {
 
     animate()
 
-    // 6. Cleanup
     return () => {
       window.removeEventListener('mousemove', handleMouseMove)
       window.removeEventListener('resize', handleResize)
