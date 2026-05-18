@@ -47,11 +47,11 @@ function App() {
       {/* 3D Moving Canvas Layer */}
       <Background3D scrollProgress={scrollProgress} />
 
-      {/* Floating Header Navigation */}
-      <nav className="fixed top-0 left-0 right-0 flex justify-center gap-8 p-6 bg-gradient-to-b from-gray-950/80 to-transparent backdrop-blur-sm z-30">
-        <button onClick={() => scrollToSection('home')} className="hover:text-blue-400 transition-colors tracking-wide font-medium">Home</button>
-        <button onClick={() => scrollToSection('about')} className="hover:text-blue-400 transition-colors tracking-wide font-medium">About</button>
-        <button onClick={() => scrollToSection('skills')} className="hover:text-blue-400 transition-colors tracking-wide font-medium">Skills</button>
+      {/* Floating Glassmorphism Header Navigation */}
+      <nav className="fixed top-6 left-1/2 -translate-x-1/2 flex justify-center gap-8 px-8 py-4 bg-white/5 backdrop-blur-md border border-white/10 rounded-full z-50 shadow-[0_4px_30px_rgba(0,0,0,0.1)]">
+        <button onClick={() => scrollToSection('home')} className="hover:text-white text-gray-300 transition-colors tracking-wide font-medium">Home</button>
+        <button onClick={() => scrollToSection('about')} className="hover:text-white text-gray-300 transition-colors tracking-wide font-medium">About</button>
+        <button onClick={() => scrollToSection('skills')} className="hover:text-white text-gray-300 transition-colors tracking-wide font-medium">Skills</button>
       </nav>
 
       {/* Slide Snap Container (PowerPoint Style Viewport) */}

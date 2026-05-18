@@ -25,7 +25,7 @@ export default function RobotCompanion() {
 
     // Materials
     const metalMaterial = new THREE.MeshStandardMaterial({ 
-      color: 0xaaaaaa, 
+      color: 0xeeeeee, 
       metalness: 0.9, 
       roughness: 0.2,
       wireframe: true // Gives it a cool structural tech vibe
@@ -66,7 +66,7 @@ export default function RobotCompanion() {
 
     // 3. Lighting (Crucial for metals)
     const ambient = new THREE.AmbientLight(0xffffff, 1)
-    const directional = new THREE.DirectionalLight(0xffffff, 2)
+    const directional = new THREE.DirectionalLight(0xffffff, 4)
     directional.position.set(5, 5, 5)
     scene.add(ambient, directional)
 

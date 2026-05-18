@@ -110,11 +110,14 @@ export default function Background3D({ scrollProgress }) {
     const clock = new THREE.Clock()
     const tempVec = new THREE.Vector3() // Pre-allocate to prevent memory leaks
     let animationFrameId
+    let smoothedProgress = 0
 
     const animate = () => {
       animationFrameId = requestAnimationFrame(animate)
       const elapsedTime = clock.getElapsedTime()
       const scroll = scrollRef.current || 0
+
+      smoothedProgress += (targetScroll - smoothedProgress) * 0.02
 
       // A. Calculate which two shapes to blend between based on scroll (0 to 1)
       let currentIndex = 0
