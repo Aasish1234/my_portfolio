@@ -87,6 +87,7 @@ function App() {
               <a href="https://github.com/Aasish1234" target="_blank" rel="noreferrer" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full text-sm font-bold transition-colors">GitHub</a> 
             </div>
           </div>
+          </div>
           <div className="z-10 hidden md:block">
             <RobotCompanion />
           </div>
