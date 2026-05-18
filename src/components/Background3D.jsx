@@ -66,11 +66,13 @@ export default function Background3D({ scrollProgress }) {
     }
 
     // 3. Build the InstancedMesh
-    const geometry = new THREE.SphereGeometry(0.12, 8, 8) 
+    const geometry = new THREE.SphereGeometry(0.04, 8, 8) 
     const material = new THREE.MeshBasicMaterial({ 
-      color: 0x3b82f6, // Start Tailwind Blue
+      color:0xffffff, // Start Tailwind Blue
       transparent: true, 
-      opacity: 0.8 
+      opacity: 0.7, // Slightly lower opacity allows the glow to build up
+      blending: THREE.AdditiveBlending, // THIS creates the glowing light effect
+      depthWrite: false // Prevents particles from clipping into each other awkwardly
     })
     
     const instancedMesh = new THREE.InstancedMesh(geometry, material, particleCount)
@@ -82,9 +84,9 @@ export default function Background3D({ scrollProgress }) {
     camera.position.z = 30
 
     // Colors for the 3 sections (Blue -> Purple -> Emerald)
-    const color1 = new THREE.Color(0x3b82f6)
-    const color2 = new THREE.Color(0xa855f7)
-    const color3 = new THREE.Color(0x10b981)
+    const color1 = new THREE.Color(0xffffff)
+    const color2 = new THREE.Color(0xffffff)
+    const color3 = new THREE.Color(0xffffff)
 
     // 4. Mouse Tracking for Parallax
     let mouseX = 0, mouseY = 0
