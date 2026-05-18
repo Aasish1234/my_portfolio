@@ -21,7 +21,7 @@ export default function CustomCursor() {
     <>
       {/* The main solid blue dot */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-blue-500 rounded-full pointer-events-none z-50"
+        className="fixed top-0 left-0 w-4 h-4 bg-white-500 rounded-full pointer-events-none z-50"
         animate={{ 
           x: mousePosition.x - 8, // Offset by half the width to center it
           y: mousePosition.y - 8 
@@ -31,7 +31,7 @@ export default function CustomCursor() {
       
       {/* The trailing hollow circle effect */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border-2 border-blue-400 rounded-full pointer-events-none z-40"
+        className="fixed top-0 left-0 w-10 h-10 border-2 border-white-400 rounded-full pointer-events-none z-40"
         animate={{ 
           x: mousePosition.x - 20, 
           y: mousePosition.y - 20 
