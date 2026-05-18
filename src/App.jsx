@@ -60,38 +60,52 @@ function App() {
         className="h-screen overflow-y-scroll snap-y snap-mandatory scroll-smooth relative z-10 hide-scrollbar"
       >
         {/* SLIDE 1: HOME */}
-        <section id="home" className="h-screen w-full snap-start flex flex-col md:flex-row items-center justify-center p-6 gap-12">
-          <div className="text-left max-w-2xl bg-gray-900/40 p-8 rounded-2xl backdrop-blur-md border border-white/10 z-10">
-            <h1 className="text-6xl font-extrabold mb-4 tracking-tight bg-gradient-to-r from-white via-gray-200 to-blue-500 bg-clip-text text-transparent">
-              Hi, I'm Aasish
-            </h1>
-            <p className="text-xl text-blue-400 font-bold uppercase tracking-widest mb-4">
-              Aspiring Software Engineer 
-            </p>
-            <p className="text-gray-300 max-w-md leading-relaxed">
-              Dedicated Computer Science student with a strong focus on ethics and self-improvement. Experienced in developing AI/ML and IoT solutions, with a focus on resilient, high-quality code.
-            </p>
-
-             {/* Updated Button Group */}
-            <div className="mt-8 flex flex-wrap gap-4">
-            {/* Primary Action: Download CV */}
-            <a 
+      <section id="home" className="h-screen w-full snap-start flex flex-col md:flex-row items-center justify-center p-6 gap-12">
+      <div className="text-left max-w-2xl bg-gray-900/40 p-8 rounded-2xl backdrop-blur-md border border-white/10 z-10">
+        <h1 className="text-6xl font-extrabold mb-4 tracking-tight bg-gradient-to-r from-white via-gray-200 to-blue-500 bg-clip-text text-transparent">
+          Hi, I'm Aasish
+        </h1>
+        <p className="text-xl text-blue-400 font-bold uppercase tracking-widest mb-4">
+          Aspiring Software Engineer
+        </p>
+        <p className="text-gray-300 max-w-md leading-relaxed">
+          Dedicated Computer Science student with a strong focus on ethics and self-improvement. Experienced in developing AI/ML and IoT solutions, with a focus on resilient, high-quality code.
+        </p>
+        
+        {/* Updated Button Group */}
+        <div className="mt-8 flex flex-wrap gap-4">
+          {/* Primary Action: Download CV */}
+          <a 
             href="/Aasish_CV.pdf" 
             download="Aasish_Shrestha_CV.pdf" 
             className="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-full text-sm font-bold transition-colors shadow-[0_0_15px_rgba(37,99,235,0.5)]"
-            >
-            Download CV
-            </a>
-            <div className="mt-6 flex gap-4">
-              <a href="mailto:aasishshrestha2005@gmail.com" className="px-6 py-2 bg-blue-600 hover:bg-blue-500 rounded-full text-sm font-bold transition-colors">Email Me</a> 
-              <a href="https://github.com/Aasish1234" target="_blank" rel="noreferrer" className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full text-sm font-bold transition-colors">GitHub</a> 
-            </div>
-          </div>
-          </div>
-          <div className="z-10 hidden md:block">
-            <RobotCompanion />
-          </div>
-        </section>
+          >Download CV
+          </a>
+          
+          {/* Secondary Actions */}
+          <a 
+            href="mailto:aasishshrestha2005@gmail.com" 
+            className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full text-sm font-bold transition-colors"
+          >
+            Email Me
+          </a>
+          
+          <a 
+            href="https://github.com/Aasish1234" 
+            target="_blank" 
+            rel="noreferrer" 
+            className="px-6 py-2 bg-white/10 hover:bg-white/20 border border-white/10 rounded-full text-sm font-bold transition-colors"
+          >
+            GitHub
+          </a>
+        </div>
+      </div>
+      
+      <div className="z-10 hidden md:block">
+        <RobotCompanion />
+      </div>
+    </section>
+        
 
         {/* SLIDE 2: ABOUT */}
         <section id="about" className="h-screen w-full snap-start flex items-center justify-center p-6">
