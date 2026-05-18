@@ -19,9 +19,9 @@ export default function CustomCursor() {
 
   return (
     <>
-      {/* The main solid blue dot */}
+      {/* The main solid white dot (with difference blending) */}
       <motion.div
-        className="fixed top-0 left-0 w-4 h-4 bg-white-500 rounded-full pointer-events-none z-50"
+        className="fixed top-0 left-0 w-4 h-4 bg-white shadow-[0_0_15px_#ffffff] mix-blend-difference rounded-full pointer-events-none z-50"
         animate={{ 
           x: mousePosition.x - 8, // Offset by half the width to center it
           y: mousePosition.y - 8 
@@ -29,9 +29,10 @@ export default function CustomCursor() {
         transition={{ type: 'tween', ease: 'backOut', duration: 0.1 }}
       />
       
-      {/* The trailing hollow circle effect */}
+      {/* The trailing hollow white circle effect */}
       <motion.div
-        className="fixed top-0 left-0 w-10 h-10 border-2 border-white-400 rounded-full pointer-events-none z-40"
+        //  CHANGED: border-white/50 gives it a nice semi-transparent white border
+        className="fixed top-0 left-0 w-10 h-10 border-2 border-white/50 rounded-full pointer-events-none z-40"
         animate={{ 
           x: mousePosition.x - 20, 
           y: mousePosition.y - 20 
